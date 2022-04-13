@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="shortcut icon" type="image/png" href="/logo.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Банк</title>
+    <!-- Учебный проект для закрепления знаний о объектах и массивах -->
+  </head>
+
+  <body>
+    <!-- Help Info -->
+
+    <button class="show-modal-window">?</button>
+    <div class="modal-window hidden">
+      <button class="close-modal-window">&times;</button>
+      Это учебный проект с основной целью: Закрепить знания связаные
+      взаимодействованиями с объектами и массивами. Данные не сохраняются, они
+      жестко закодированы в js.
+      <a href="https://t.me/Raym0NT" target="_blank">Телеграм</a>
+      <br />
+      <br />
+
+      <strong>Тестовые данные:</strong>
+      <p>
+        const account1 = { login: "Vlady", userName: "Влад Русаков",
+        transactions: [500, 250, -300, 5000, -850, -110, -170, 1100], interest:
+        1.5, pin: 1111, };
+        <br />
+        const account2 = { login: "Andry", userName: "Андрей Русин",
+        transactions: [2000, 6400, -1350, -70, -210, -2000, 5500, -30],
+        interest: 1.3, pin: 2222, };
+        <br />
+        const account3 = { login: "Maksy", userName: "Максим Алексеев",
+        transactions: [900, -200, 280, 300, -200, 150, 1400, -400], interest:
+        0.8, pin: 3333, };
+        <br />
+        const account4 = { login: "Georgy", userName: "Георгий Сапагов",
+        transactions: [530, 1300, 500, 40, 190], interest: 1, pin: 4444, };
+        <br />
+        const account5 = { login: "Dany", userName: "Данил Фамильев",
+        transactions: [630, 800, 300, 50, 120], interest: 1.1, pin: 5555, };
+        <br />
+        <br />
+        login = Логин, pin = Пароль
+      </p>
+    </div>
+    <div class="overlay hidden"></div>
+
+    <!-- Login -->
+    <div class="login">
+      <p class="login__text">Войдите в свой аккаунт</p>
+      <span class="login__error">Неверные данные</span>
+      <form class="login__form">
+        <input
+          type="text"
+          placeholder="Логин"
+          class="login__input login__input--user"
+        />
+        <input
+          type="password"
+          placeholder="Пароль"
+          maxlength="4"
+          class="login__input login__input--pin"
+        />
+        <button class="login__btn">Авторизоваться &rarr;</button>
+      </form>
+    </div>
+
+    <main class="app">
+      <!-- Balance -->
+      <div class="balance">
+        <div>
+          <p class="balance__label">Текущий баланс</p>
+          <p class="balance__date">
+            С
+            <span class="date">03/12/2021</span>
+          </p>
+        </div>
+        <p class="balance__value">0000$</p>
+      </div>
+
+      <!-- Transactions -->
+      <div class="transactions">
+        <div class="transactions__row">
+          <div class="transactions__type transactions__type--deposit">
+            2 депозит
+          </div>
+          <div class="transactions__date">2 дня назад</div>
+          <div class="transactions__value">5 000$</div>
+        </div>
+        <div class="transactions__row">
+          <div class="transactions__type transactions__type--withdrawal">
+            1 вывод средств
+          </div>
+          <div class="transactions__date">21/01/2022</div>
+          <div class="transactions__value">-256S</div>
+        </div>
+      </div>
+
+      <!-- Total -->
+      <div class="total">
+        <div class="total__receiving">
+          <p class="total__label">Получение</p>
+          <p class="total__value total__value--in">0000$</p>
+        </div>
+        <div class="total__conclusion">
+          <p class="total__label">Вывод</p>
+          <p class="total__value total__value--out">0000$</p>
+        </div>
+
+        <div class="total__interest">
+          <p class="total__label">Процент</p>
+          <p class="total__value total__value--interest">0000$</p>
+        </div>
+        <button class="btn--sort">&downarrow; СОРТИРОВАТЬ</button>
+      </div>
+
+      <!-- Operation - Transfers -->
+      <div class="operation operation--transfer">
+        <h2 class="operation__name">Перевести деньги</h2>
+        <form class="form form--transfer">
+          <input class="form__input form__input--to" type="text" />
+          <input
+            class="form__input form__input--amount"
+            type="number"
+            min="0"
+          />
+          <button class="form__btn form__btn--transfer">&rarr;</button>
+          <label class="form__label">Получатель</label>
+          <label class="form__label">Сумма</label>
+        </form>
+      </div>
+
+      <!-- Operation - Loan -->
+      <div class="operation operation--loan">
+        <h2 class="operation__name">Запросить займ</h2>
+        <form class="form form--loan">
+          <input type="number" class="form__input form__input--loan-amount" />
+          <button class="form__btn form__btn--loan">&rarr;</button>
+          <label class="form__label form__label--loan">Сумма</label>
+        </form>
+      </div>
+
+      <!-- Operation - Close -->
+      <div class="operation operation--close">
+        <h2 class="operation__name">Закрыть счёт</h2>
+        <form class="form form--close">
+          <input type="text" class="form__input form__input--user" />
+          <input
+            type="password"
+            maxlength="6"
+            class="form__input form__input--pin"
+          />
+          <button class="form__btn form__btn--close">&rarr;</button>
+          <label class="form__label">Логин</label>
+          <label class="form__label">Пароль</label>
+        </form>
+      </div>
+
+      <button class="quit-account">Выйти из аккаунта &rarr;</button>
+    </main>
+
+    <script defer src="js/script.js"></script>
+  </body>
+</html>
