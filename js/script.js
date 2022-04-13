@@ -5,6 +5,7 @@ const account1 = {
   login: "Vlady",
   userName: "Влад Русаков",
   transactions: [500, 250, -300, 5000, -850, -110, -170, 1100],
+  creditBalance: 0,
   interest: 1.5,
   pin: 1111,
 };
@@ -13,6 +14,7 @@ const account2 = {
   login: "Andry",
   userName: "Андрей Русин",
   transactions: [2000, 6400, -1350, -70, -210, -2000, 5500, -30],
+  creditBalance: 0,
   interest: 1.3,
   pin: 2222,
 };
@@ -21,6 +23,7 @@ const account3 = {
   login: "Maksy",
   userName: "Максим Алексеев",
   transactions: [900, -200, 280, 300, -200, 150, 1400, -400],
+  creditBalance: 0,
   interest: 0.8,
   pin: 3333,
 };
@@ -29,6 +32,7 @@ const account4 = {
   login: "Georgy",
   userName: "Георгий Сапагов",
   transactions: [530, 1300, 500, 40, 190],
+  creditBalance: 0,
   interest: 1,
   pin: 4444,
 };
@@ -37,6 +41,7 @@ const account5 = {
   login: "Dany",
   userName: "Данил Фамильев",
   transactions: [630, 800, 300, 50, 120],
+  creditBalance: 0,
   interest: 1.1,
   pin: 5555,
 };
@@ -213,6 +218,34 @@ btnTransfer.addEventListener("click", e => {
     inputTransferAmount.classList.remove("inputErrorAnimate");
     inputTransferTo.classList.remove("inputErrorAnimate");
   }
+});
+
+// Loan
+btnLoan.addEventListener("click", e => {
+  e.preventDefault();
+
+  const loanAmount = Number(inputLoanAmount.value);
+
+  /* 
+  if one of the deposits is more than 70% of the loan amount then we give a loan, else we not give a loan
+  */
+  if (
+    loanAmount > 0 &&
+    currentAccount.transactions.some(trans => trans >= (loanAmount * 70) / 100)
+  ) {
+    currentAccount.creditBalance += loanAmount;
+    currentAccount.transactions.push(loanAmount);
+    updateUi(currentAccount);
+    console.log(currentAccount.creditBalance, currentAccount.balance);
+  } else {
+    console.log(
+      "not take",
+      currentAccount.creditBalance,
+      currentAccount.balance
+    );
+  }
+
+  inputLoanAmount.value = "";
 });
 
 // Delete account
