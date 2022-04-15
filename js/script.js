@@ -5,8 +5,7 @@ const account1 = {
   login: "Vlady",
   userName: "Влад Русаков",
   transactions: [500, 250, -300, 5000, -850, -110, -170, 1100],
-  creditBalance: 0,
-  interest: 1.5,
+  loanDebt: 2500,
   pin: 1111,
 };
 
@@ -14,8 +13,7 @@ const account2 = {
   login: "Andry",
   userName: "Андрей Русин",
   transactions: [2000, 6400, -1350, -70, -210, -2000, 5500, -30],
-  creditBalance: 0,
-  interest: 1.3,
+  loanDebt: 1200,
   pin: 2222,
 };
 
@@ -23,8 +21,7 @@ const account3 = {
   login: "Maksy",
   userName: "Максим Алексеев",
   transactions: [900, -200, 280, 300, -200, 150, 1400, -400],
-  creditBalance: 0,
-  interest: 0.8,
+  loanDebt: 100,
   pin: 3333,
 };
 
@@ -32,8 +29,7 @@ const account4 = {
   login: "Georgy",
   userName: "Георгий Сапагов",
   transactions: [530, 1300, 500, 40, 190],
-  creditBalance: 0,
-  interest: 1,
+  loanDebt: 50,
   pin: 4444,
 };
 
@@ -41,8 +37,8 @@ const account5 = {
   login: "Dany",
   userName: "Данил Фамильев",
   transactions: [630, 800, 300, 50, 120],
-  creditBalance: 0,
-  interest: 1.1,
+  loanDebt: 0,
+
   pin: 5555,
 };
 
@@ -54,7 +50,7 @@ const labelDate = document.querySelector(".date");
 const labelBalance = document.querySelector(".balance__value");
 const labelSumIn = document.querySelector(".total__value--in");
 const labelSumOut = document.querySelector(".total__value--out");
-const labelSumInterest = document.querySelector(".total__value--interest");
+const labelsumDebt = document.querySelector(".form__label--loan-debt-total");
 
 const containerApp = document.querySelector(".app");
 const containerTransactions = document.querySelector(".transactions");
@@ -79,19 +75,25 @@ const inputClosePin = document.querySelector(".form__input--pin");
 
 let currentAccount;
 let currentAccountIndex;
+
 // display transactions
-const displayTransactions = function (transactions) {
+const displayTransactions = function (transactions, sort = false) {
   // clear container
   containerTransactions.innerHTML = "";
 
+  // Sort Array
+  const transacs = sort
+    ? transactions.slice().sort((x, y) => x - y)
+    : transactions;
+
   // added a transactions in container
-  transactions.forEach((transaction, index) => {
+  transacs.forEach(transaction => {
     const transactionType = transaction > 0 ? "deposit" : "withdrawal";
 
     const transactionRow = `
     <div class="transactions__row">
       <div class="transactions__type transactions__type--${transactionType}">
-        ${index + 1} ${transactionType}
+         ${transactionType}
       </div>
       <div class="transactions__value">${transaction}$</div>
     </div>
@@ -125,14 +127,14 @@ const displayTotalTransactions = function (account) {
     .reduce((acc, transaction) => acc + transaction, 0);
 
   labelSumOut.textContent = `${Math.abs(totalWithdrawals)}$`;
+};
+// display loan Debt
+const displayLoanDebt = function (account) {
+  account.loanDebt < 100
+    ? (labelsumDebt.style.color = "#76ff76")
+    : (labelsumDebt.style.color = "#ff8888");
 
-  // sum Interest
-  const interestTotal = account.transactions
-    .filter(transaction => transaction > 0)
-    .map(deposit => (deposit * account.interest) / 100)
-    .reduce((acc, interest) => acc + interest, 0);
-
-  labelSumInterest.textContent = `${interestTotal.toFixed(2)}$`;
+  labelsumDebt.textContent = `${account.loanDebt}$`;
 };
 
 // Update Ui
@@ -145,6 +147,9 @@ const updateUi = function (account) {
 
   // display total
   displayTotalTransactions(account);
+
+  // display loan debt
+  displayLoanDebt(account);
 };
 
 // Quit Account
@@ -154,6 +159,8 @@ const quitAccount = () => {
   loginWrapper.style.display = "flex";
   containerApp.style.display = "none";
 };
+
+// *********** Events
 
 // Login account
 btnLogin.addEventListener("click", e => {
@@ -227,22 +234,16 @@ btnLoan.addEventListener("click", e => {
   const loanAmount = Number(inputLoanAmount.value);
 
   /* 
-  if one of the deposits is more than 70% of the loan amount then we give a loan, else we not give a loan
+    if loanAmount > 0 and loanAmount * 3 < balance
   */
-  if (
-    loanAmount > 0 &&
-    currentAccount.transactions.some(trans => trans >= (loanAmount * 70) / 100)
-  ) {
-    currentAccount.creditBalance += loanAmount;
+  if (loanAmount > 0 && currentAccount.balance > loanAmount * 3) {
+    currentAccount.loanDebt += loanAmount;
     currentAccount.transactions.push(loanAmount);
     updateUi(currentAccount);
-    console.log(currentAccount.creditBalance, currentAccount.balance);
+
+    console.log(currentAccount.loanDebt, currentAccount.balance);
   } else {
-    console.log(
-      "not take",
-      currentAccount.creditBalance,
-      currentAccount.balance
-    );
+    console.log("not take", currentAccount.loanDebt, currentAccount.balance);
   }
 
   inputLoanAmount.value = "";
@@ -262,6 +263,15 @@ btnClose.addEventListener("click", e => {
   }
 });
 
+let transactionsSorted = false;
+btnSort.addEventListener("click", e => {
+  e.preventDefault();
+  // Sorted of bigger number or smaller number
+  displayTransactions(currentAccount.transactions, !transactionsSorted);
+  transactionsSorted = !transactionsSorted;
+});
+
+//
 // Modal Window
 const modalWindow = document.querySelector(".modal-window"),
   overlay = document.querySelector(".overlay"),

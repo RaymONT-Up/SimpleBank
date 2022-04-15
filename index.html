@@ -58,22 +58,22 @@
     <div class="overlay hidden"></div>
 
     <!-- Login -->
-    <div class="login">
-      <p class="login__text">Войдите в свой аккаунт</p>
-      <span class="login__error">Неверные данные</span>
-      <form class="login__form">
+    <div class="login inlet-wrapper">
+      <p class="login__text inlet__text">Войдите в свой аккаунт</p>
+      <span class="login__error inlet__error">Неверные данные</span>
+      <form class="login__form inlet__form">
         <input
           type="text"
           placeholder="Логин"
-          class="login__input login__input--user"
+          class="login__input--user inlet__input"
         />
         <input
           type="password"
           placeholder="Пароль"
           maxlength="4"
-          class="login__input login__input--pin"
+          class="login__input--pin inlet__input"
         />
-        <button class="login__btn">Авторизоваться &rarr;</button>
+        <button class="login__btn inlet__btn">Авторизоваться &rarr;</button>
       </form>
     </div>
 
@@ -119,10 +119,6 @@
           <p class="total__value total__value--out">0000$</p>
         </div>
 
-        <div class="total__interest">
-          <p class="total__label">Процент</p>
-          <p class="total__value total__value--interest">0000$</p>
-        </div>
         <button class="btn--sort">&downarrow; СОРТИРОВАТЬ</button>
       </div>
 
@@ -149,6 +145,8 @@
           <input type="number" class="form__input form__input--loan-amount" />
           <button class="form__btn form__btn--loan">&rarr;</button>
           <label class="form__label form__label--loan">Сумма</label>
+          <label class="form__label form__label--loan-debt-total">0$</label>
+          <label class="form__label form__label--loan-debt-text">Долг</label>
         </form>
       </div>
 
